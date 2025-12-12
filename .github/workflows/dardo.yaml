@@ -1,5 +1,5 @@
 ---
-name: dardo
+name: Build and Publish
 
 on:
   push:
@@ -29,8 +29,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags:
-            - latest
+          tags: ${{ github.repository_name }}:latest
 
   publish:
     runs-on: ubuntu-24.04
