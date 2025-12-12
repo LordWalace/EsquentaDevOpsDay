@@ -7,7 +7,7 @@ on:
       - main
 
 env:
-  DOCKER_REGISTRY: ghcr.io/LordWalace/EsquentaDevOpsDay
+  DOCKER_REGISTRY: ghcr.io/lordwalace/esquentadevopsday
 
 jobs:
   build:
