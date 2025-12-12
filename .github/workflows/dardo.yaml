@@ -1,5 +1,5 @@
 ---
-name: Build and Publish
+name: dardo
 
 on:
   push:
