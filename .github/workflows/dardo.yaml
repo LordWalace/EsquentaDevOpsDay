@@ -6,37 +6,26 @@ on:
     branches:
       - main
 
+env:
+  DOCKER_REGISTRY: ghcr.io/jonta-sancar/site-devopsdays
+
 jobs:
   build:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
-      - name: Docker setup
-        uses: docker/setup-docker-action@v4
-
-      - name: Docker login
+      - name: Login to Github Registrey
+        if: success()
         uses: docker/login-action@v1
         with:
-          registry: ${{ github.repository_name }}
+          registry: ${{ env.DOCKER_REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and publish
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          file: ./Dockerfile
-          push: true
-          tags: ${{ github.repository_name }}:latest
+      - name: Build image
+        run: docker build -t ${{ env.DOCKER_REGISTRY }}:latest .
 
-  publish:
-    runs-on: ubuntu-24.04
-    needs: build
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-
-      - name: Ec2 deployment
-        run: echo 'testing'
+      - name: Publish image
+        run: docker push ${{ env.DOCKER_REGISTRY }}:latest
